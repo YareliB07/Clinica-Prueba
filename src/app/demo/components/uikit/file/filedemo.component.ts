@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MessageService } from 'primeng/api';
+import { MenuItem } from 'primeng/api';
 
 @Component({
     templateUrl: './filedemo.component.html',
@@ -8,6 +9,10 @@ import { MessageService } from 'primeng/api';
 export class FileDemoComponent {
 
     uploadedFiles: any[] = [];
+
+    items: MenuItem[] = [];
+
+    cardMenu: MenuItem[] = [];
 
     constructor(private messageService: MessageService) {}
 
