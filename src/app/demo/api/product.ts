@@ -13,4 +13,11 @@ export interface Product {
     category?: string;
     image?: string;
     rating?: number;
+
+
+    nombre?: string;
+    ocupacion?: string;
+    edad?: number;
+    genero?: string;
+    telefono?: string;
 }
