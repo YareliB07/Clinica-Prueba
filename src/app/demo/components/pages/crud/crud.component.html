@@ -52,18 +52,24 @@
             <p-toolbar styleClass="mb-4">
                 <ng-template pTemplate="left">
                     <div class="my-2">
-                        <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+                        <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
+                            (click)="openNew()"></button>
                     </div>
                 </ng-template>
             </p-toolbar>
 
-            <p-table #dt [value]="products" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['name','country.name','representative.name','status']" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [(selection)]="selectedProducts" selectionMode="multiple" [rowHover]="true" dataKey="id">
+            <p-table #dt [value]="products" [columns]="cols" responsiveLayout="scroll" [rows]="10"
+                [globalFilterFields]="['name','country.name','representative.name','status']" [paginator]="true"
+                [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [(selection)]="selectedProducts" selectionMode="multiple" [rowHover]="true" dataKey="id">
                 <ng-template pTemplate="caption">
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                         <h5 class="m-0">PACIENTES</h5>
                         <span class="block mt-2 md:mt-0 p-input-icon-left">
                             <i class="pi pi-search"></i>
-                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search..."  class="w-full sm:w-auto"/>
+                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search..."
+                                class="w-full sm:w-auto" />
                         </span>
                     </div>
                 </ng-template>
@@ -102,8 +108,16 @@
                         </td>
                         <td>
                             <div class="flex">
-                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteProduct(product)"></button>
-                                
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                    (click)="deleteProduct(product)"></button>
+                                    
+                                <p-fileUpload name="demo[]" url="./upload.php" (onUpload)="onUpload($event)"
+                                    [mode]="'basic'" [multiple]="true" accept=".json" [maxFileSize]="1000000">
+                                    <ng-template pTemplate="content">
+                                        <button type="button" pButton icon="pi pi-upload" label="Select Files"></button>
+                                    </ng-template>
+                                </p-fileUpload>
+
                             </div>
                         </td>
                     </tr>
@@ -114,75 +128,85 @@
 
 
 
-        <p-dialog [(visible)]="productDialog" [style]="{width: '450px'}" header="Nuevo Paciente" [modal]="true" class="p-fluid">
-            
+        <p-dialog [(visible)]="productDialog" [style]="{width: '450px'}" header="Nuevo Paciente" [modal]="true"
+            class="p-fluid">
 
-                <div class="field grid">
-                    <label htmlFor="name" class="col-12 mb-2 md:col-2 md:mb-0"><b>Nombre:</b></label>
-                    <div class="col-12 md:col-10">
-                        <input type="text" pInputText id="nombre" [(ngModel)]="product.nombre" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !product.nombre}"/>
-                    </div>
-                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !product.nombre">Nombre es requerido</small>
-                </div>
 
-                <br>
-                <div class="field grid">
-                    <label htmlFor="ocupacion" class="col-12 mb-2 md:col-3 md:mb-0"><b>Ocupación: </b></label>
-                    <div class="col-3 md:col-9">
-                        <input type="text" pInputText id="ocupacion" [(ngModel)]="product.ocupacion" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !product.ocupacion}"/>
-                    </div>
-                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !product.ocupacion">Ocupación es requerida</small>
+            <div class="field grid">
+                <label htmlFor="name" class="col-12 mb-2 md:col-2 md:mb-0"><b>Nombre:</b></label>
+                <div class="col-12 md:col-10">
+                    <input type="text" pInputText id="nombre" [(ngModel)]="product.nombre" required autofocus
+                        [ngClass]="{'ng-invalid ng-dirty' : submitted && !product.nombre}" />
                 </div>
+                <small class="ng-dirty ng-invalid" *ngIf="submitted && !product.nombre">Nombre es requerido</small>
+            </div>
 
-                <br>
-                <div class="field grid">
-                    <label htmlFor="name" class="col-12 mb-2 md:col-2 md:mb-0"><b>Edad:</b></label>
-                    <div class="col-12 md:col-10">
-                        <input type="text" pInputText id="name" [(ngModel)]="product.edad" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !product.edad}"/>
-                    </div>
-                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !product.edad">Edad es requerida</small>
+            <br>
+            <div class="field grid">
+                <label htmlFor="ocupacion" class="col-12 mb-2 md:col-3 md:mb-0"><b>Ocupación: </b></label>
+                <div class="col-3 md:col-9">
+                    <input type="text" pInputText id="ocupacion" [(ngModel)]="product.ocupacion" required autofocus
+                        [ngClass]="{'ng-invalid ng-dirty' : submitted && !product.ocupacion}" />
                 </div>
+                <small class="ng-dirty ng-invalid" *ngIf="submitted && !product.ocupacion">Ocupación es
+                    requerida</small>
+            </div>
 
-                <br>
-                <div class="flex align-items-center gap-4">
-                    <label class="mb-3"><b>Género:</b></label>
-                        <div class="flex align-items-center">
-                            <p-radioButton id="M" name="genero" value="masculino" [(ngModel)]="product.genero"></p-radioButton>
-                            <label for="M"> Masculino</label>
-                        </div>
-                        <div class="flex align-items-center">
-                            <p-radioButton id="F" name="genero" value="femenino" [(ngModel)]="product.genero"></p-radioButton>
-                            <label for="F"> Femenino</label>
-                        </div>
+            <br>
+            <div class="field grid">
+                <label htmlFor="name" class="col-12 mb-2 md:col-2 md:mb-0"><b>Edad:</b></label>
+                <div class="col-12 md:col-10">
+                    <input type="text" pInputText id="name" [(ngModel)]="product.edad" required autofocus
+                        [ngClass]="{'ng-invalid ng-dirty' : submitted && !product.edad}" />
                 </div>
+                <small class="ng-dirty ng-invalid" *ngIf="submitted && !product.edad">Edad es requerida</small>
+            </div>
 
-                <br>
-                <div class="field grid">
-                    <label htmlFor="name" class="col-12 mb-2 md:col-2 md:mb-0"><b>Teléfono:</b></label>
-                    <div class="col-12 md:col-10">
-                        <input type="text" pInputText id="telefono" [(ngModel)]="product.telefono" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !product.telefono}"/>
-                    </div>
-                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !product.telefono">Teléfono es requerido</small>
+            <br>
+            <div class="flex align-items-center gap-4">
+                <label class="mb-3"><b>Género:</b></label>
+                <div class="flex align-items-center">
+                    <p-radioButton id="M" name="genero" value="masculino" [(ngModel)]="product.genero"></p-radioButton>
+                    <label for="M"> Masculino</label>
                 </div>
+                <div class="flex align-items-center">
+                    <p-radioButton id="F" name="genero" value="femenino" [(ngModel)]="product.genero"></p-radioButton>
+                    <label for="F"> Femenino</label>
+                </div>
+            </div>
+
+            <br>
+            <div class="field grid">
+                <label htmlFor="name" class="col-12 mb-2 md:col-2 md:mb-0"><b>Teléfono:</b></label>
+                <div class="col-12 md:col-10">
+                    <input type="text" pInputText id="telefono" [(ngModel)]="product.telefono" required autofocus
+                        [ngClass]="{'ng-invalid ng-dirty' : submitted && !product.telefono}" />
+                </div>
+                <small class="ng-dirty ng-invalid" *ngIf="submitted && !product.telefono">Teléfono es requerido</small>
+            </div>
 
 
 
             <ng-template pTemplate="footer">
-                <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-                <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveProduct()"></button>
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
+                    (click)="hideDialog()"></button>
+                <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"
+                    (click)="saveProduct()"></button>
             </ng-template>
         </p-dialog>
-        
 
-        
+
+
         <p-dialog [(visible)]="deleteProductDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
             <div class="flex align-items-center justify-content-center">
                 <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span *ngIf="product">¿Estás seguro que quieres borrar <b>{{product.name}}</b>?</span>
+                <span *ngIf="product">¿Estás seguro que quieres borrar a <b>{{product.nombre}}</b>?</span>
             </div>
             <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteProductDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDelete()"></button>
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+                    (click)="deleteProductDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes"
+                    (click)="confirmDelete()"></button>
             </ng-template>
         </p-dialog>
     </div>

@@ -15,7 +15,7 @@ export class CrudComponent implements OnInit {
 
     deleteProductDialog: boolean = false;
 
-    deleteProductsDialog: boolean = false;
+    //deleteProductsDialog: boolean = false;
 
     products: Product[] = [];
 
@@ -27,7 +27,7 @@ export class CrudComponent implements OnInit {
 
     cols: any[] = [];
 
-    statuses: any[] = [];
+    /*statuses: any[] = [];*/
 
     rowsPerPageOptions = [5, 10, 20];
 
@@ -39,18 +39,18 @@ export class CrudComponent implements OnInit {
         this.productService.getProducts().then(data => this.products = data);
 
         this.cols = [
-            { field: 'product', header: 'Product' },
-            { field: 'price', header: 'Price' },
-            { field: 'category', header: 'Category' },
-            { field: 'rating', header: 'Reviews' },
-            { field: 'inventoryStatus', header: 'Status' }
+            { field: 'nombre', header: 'Nombre' },
+            { field: 'ocupacion', header: 'Ocupación' },
+            { field: 'edad', header: 'Edad' },
+            { field: 'genero', header: 'Género' },
+            { field: 'telefono', header: 'Teléfono' }
         ];
 
-        this.statuses = [
+        /*this.statuses = [
             { label: 'INSTOCK', value: 'instock' },
             { label: 'LOWSTOCK', value: 'lowstock' },
             { label: 'OUTOFSTOCK', value: 'outofstock' }
-        ];
+        ];*/
     }
 
     openNew() {
@@ -59,31 +59,27 @@ export class CrudComponent implements OnInit {
         this.productDialog = true;
     }
 
-    deleteSelectedProducts() {
-        this.deleteProductsDialog = true;
-    }
-
-    editProduct(product: Product) {
+    /*editProduct(product: Product) {
         this.product = { ...product };
         this.productDialog = true;
-    }
+    }*/
 
     deleteProduct(product: Product) {
         this.deleteProductDialog = true;
         this.product = { ...product };
     }
 
-    confirmDeleteSelected() {
+    /*confirmDeleteSelected() {
         this.deleteProductsDialog = false;
         this.products = this.products.filter(val => !this.selectedProducts.includes(val));
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });
         this.selectedProducts = [];
-    }
+    }*/
 
     confirmDelete() {
         this.deleteProductDialog = false;
         this.products = this.products.filter(val => val.id !== this.product.id);
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
+        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Paciente eliminado', life: 3000 });
         this.product = {};
     }
 
@@ -102,10 +98,8 @@ export class CrudComponent implements OnInit {
                 this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
             } else {
                 this.product.id = this.createId();
-                // @ts-ignore
-                this.product.inventoryStatus = this.product.inventoryStatus ? this.product.inventoryStatus.value : 'INSTOCK';
                 this.products.push(this.product);
-                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
+                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Paciente creado', life: 3000 });
             }
 
             this.products = [...this.products];

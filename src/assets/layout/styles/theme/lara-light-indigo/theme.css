@@ -1225,10 +1225,10 @@
     font-family: var(--font-family);
     font-feature-settings: var(--font-feature-settings, normal);
     font-size: 1rem;
-    color: #4b5563;
-    background: #ffffff;
+    color: white;
+    background: #111828;
     padding: 0.75rem 0.75rem;
-    border: 1px solid #d1d5db;
+    border: 1px solid #434C5B;
     transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
     appearance: none;
     border-radius: 6px;
@@ -1239,8 +1239,8 @@
   .p-inputtext:enabled:focus {
     outline: 0 none;
     outline-offset: 0;
-    box-shadow: 0 0 0 0.2rem #C7D2FE;
-    border-color: #6366F1;
+    box-shadow: 0 0 0 0.2rem #4BB3AC;
+    border-color: #4BB3AC;
   }
   .p-inputtext.ng-dirty.ng-invalid {
     border-color: #e24c4c;
@@ -1605,8 +1605,8 @@
     height: 22px;
   }
   .p-radiobutton .p-radiobutton-box {
-    border: 2px solid #d1d5db;
-    background: #ffffff;
+    border: 2px solid #434C5B;
+    background: #111828;
     width: 22px;
     height: 22px;
     color: #4b5563;
@@ -1629,8 +1629,8 @@
     background-color: #ffffff;
   }
   .p-radiobutton .p-radiobutton-box.p-highlight {
-    border-color: #6366F1;
-    background: #6366F1;
+    border-color: #4BB3AC;
+    background: #4BB3AC;
   }
   .p-radiobutton .p-radiobutton-box.p-highlight:not(.p-disabled):hover {
     border-color: #4338CA;
@@ -1997,7 +1997,7 @@
   }
   .p-button.p-button-text {
     background-color: transparent;
-    color: #6366F1;
+    color: #4BB3AC;
     border-color: transparent;
   }
   .p-button.p-button-text:not(:disabled):hover {
@@ -2923,9 +2923,9 @@
     border-radius: 0;
   }
   .p-datatable .p-datatable-header {
-    background: #f9fafb;
+    background: #202938;
     color: #374151;
-    border: 1px solid #e5e7eb;
+    border: 1px solid #434C5B;
     border-width: 1px 0 1px 0;
     padding: 1rem 1rem;
     font-weight: 700;
@@ -2941,11 +2941,11 @@
   .p-datatable .p-datatable-thead > tr > th {
     text-align: left;
     padding: 1rem 1rem;
-    border: 1px solid #e5e7eb;
+    border: 1px solid #434C5B;
     border-width: 0 0 1px 0;
     font-weight: 700;
-    color: #374151;
-    background: #f9fafb;
+    color: white;
+    background: #202938;
     transition: box-shadow 0.2s;
   }
   .p-datatable .p-datatable-tfoot > tr > td {
@@ -2971,8 +2971,8 @@
     margin-left: 0.5rem;
   }
   .p-datatable .p-sortable-column:not(.p-highlight):hover {
-    background: #f3f4f6;
-    color: #374151;
+    background: #4b4b4b2d;
+    color: white;
   }
   .p-datatable .p-sortable-column:not(.p-highlight):hover .p-sortable-column-icon {
     color: #374151;
@@ -2996,8 +2996,8 @@
     outline: 0 none;
   }
   .p-datatable .p-datatable-tbody > tr {
-    background: #ffffff;
-    color: #4b5563;
+    background: #202938;
+    color: white;
     transition: box-shadow 0.2s;
   }
   .p-datatable .p-datatable-tbody > tr > td {
@@ -3022,9 +3022,9 @@
 .p-datatable .p-datatable-tbody > tr > td .p-row-editor-init:enabled:hover,
 .p-datatable .p-datatable-tbody > tr > td .p-row-editor-save:enabled:hover,
 .p-datatable .p-datatable-tbody > tr > td .p-row-editor-cancel:enabled:hover {
-    color: #374151;
+    color: white;
     border-color: transparent;
-    background: #f3f4f6;
+    background: #4b4b4b2d;
   }
   .p-datatable .p-datatable-tbody > tr > td .p-row-toggler:focus-visible,
 .p-datatable .p-datatable-tbody > tr > td .p-row-editor-init:focus-visible,
@@ -3052,8 +3052,8 @@
     box-shadow: inset 0 -2px 0 0 #EEF2FF;
   }
   .p-datatable.p-datatable-hoverable-rows .p-datatable-tbody > tr:not(.p-highlight):hover {
-    background: #f3f4f6;
-    color: #4b5563;
+    background: #4b4b4b2d;
+    color: white;
   }
   .p-datatable .p-column-resizer-helper {
     background: #6366F1;
@@ -3454,8 +3454,8 @@
   }
 
   .p-paginator {
-    background: #ffffff;
-    color: #6b7280;
+    background: #202938;
+    color: #434C5B;
     border: solid #f3f4f6;
     border-width: 0;
     padding: 0.5rem 1rem;
@@ -3494,6 +3494,8 @@
     margin-left: 0.5rem;
     margin-right: 0.5rem;
     height: 3rem;
+    background-color: #111828;
+    border-color: #434C5B;
   }
   .p-paginator .p-dropdown .p-dropdown-label {
     padding-right: 0;
@@ -3525,9 +3527,9 @@
     border-radius: 50%;
   }
   .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
-    background: #EEF2FF;
+    background: #1F464D;
     border-color: #EEF2FF;
-    color: #4338CA;
+    color: white;
   }
   .p-paginator .p-paginator-pages .p-paginator-page:not(.p-highlight):hover {
     background: #f3f4f6;
@@ -4306,8 +4308,8 @@
   }
 
   .p-toolbar {
-    background: #f9fafb;
-    border: 1px solid #e5e7eb;
+    background: #202938;
+    border: 1px solid #434C5B;
     padding: 1.25rem;
     border-radius: 6px;
     gap: 0.5rem;
@@ -4371,7 +4373,7 @@
   }
   .p-dialog .p-dialog-header {
     border-bottom: 0 none;
-    background: #ffffff;
+    background: #202938;
     color: #374151;
     padding: 1.5rem;
     border-top-right-radius: 6px;
@@ -4380,6 +4382,7 @@
   .p-dialog .p-dialog-header .p-dialog-title {
     font-weight: 700;
     font-size: 1.25rem;
+    color: white;
   }
   .p-dialog .p-dialog-header .p-dialog-header-icon {
     width: 2rem;
@@ -4405,8 +4408,8 @@
     margin-right: 0;
   }
   .p-dialog .p-dialog-content {
-    background: #ffffff;
-    color: #4b5563;
+    background: #202938;
+    color: white;
     padding: 0 1.5rem 2rem 1.5rem;
   }
   .p-dialog .p-dialog-content:last-of-type {
@@ -4415,7 +4418,7 @@
   }
   .p-dialog .p-dialog-footer {
     border-top: 0 none;
-    background: #ffffff;
+    background: #202938;
     color: #4b5563;
     padding: 0 1.5rem 1.5rem 1.5rem;
     text-align: right;
