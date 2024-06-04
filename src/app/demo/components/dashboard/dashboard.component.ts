@@ -6,26 +6,27 @@ import { Subscription, debounceTime } from 'rxjs';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 
 @Component({
-    templateUrl: './dashboard.component.html',
+    templateUrl: './dashboard.component.html'
 })
 export class DashboardComponent implements OnInit, OnDestroy {
 
     items!: MenuItem[];
-
     products!: Product[];
-
     chartData: any;
-
     chartOptions: any;
-
+    barChartData: any;
+    barChartOptions: any;
+    horizontalBarChartData: any;
+    horizontalBarChartOptions: any;
+    recentVisits: string[] = ["John Doe", "Jane Smith", "Michael Johnson"];
     subscription!: Subscription;
 
     constructor(private productService: ProductService, public layoutService: LayoutService) {
         this.subscription = this.layoutService.configUpdate$
-        .pipe(debounceTime(25))
-        .subscribe((config) => {
-            this.initChart();
-        });
+            .pipe(debounceTime(25))
+            .subscribe((config) => {
+                this.initChart();
+            });
     }
 
     ngOnInit() {
@@ -45,28 +46,81 @@ export class DashboardComponent implements OnInit, OnDestroy {
         const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
         this.chartData = {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+            labels: ['Femenino', 'Masculino'],
             datasets: [
                 {
-                    label: 'First Dataset',
-                    data: [65, 59, 80, 81, 56, 55, 40],
-                    fill: false,
-                    backgroundColor: documentStyle.getPropertyValue('--bluegray-700'),
-                    borderColor: documentStyle.getPropertyValue('--bluegray-700'),
-                    tension: .4
-                },
-                {
-                    label: 'Second Dataset',
-                    data: [28, 48, 40, 19, 86, 27, 90],
-                    fill: false,
-                    backgroundColor: documentStyle.getPropertyValue('--green-600'),
-                    borderColor: documentStyle.getPropertyValue('--green-600'),
-                    tension: .4
+                    data: [60, 40],
+                    backgroundColor: [documentStyle.getPropertyValue('--blue-500'), documentStyle.getPropertyValue('--pink-500')],
+                    hoverBackgroundColor: [documentStyle.getPropertyValue('--blue-400'), documentStyle.getPropertyValue('--pink-400')]
                 }
             ]
         };
 
         this.chartOptions = {
+            plugins: {
+                legend: {
+                    labels: {
+                        color: textColor
+                    }
+                }
+            }
+        };
+
+        this.barChartData = {
+            labels: ['Obesidad', 'Diabetes', 'Hipertensión', 'Colesterol', 'Anemia'],
+            datasets: [
+                {
+                    label: 'Patologías',
+                    backgroundColor: documentStyle.getPropertyValue('--blue-500'),
+                    borderColor: documentStyle.getPropertyValue('--blue-500'),
+                    data: [35, 25, 15, 10, 5]
+                }
+            ]
+        };
+
+        this.barChartOptions = {
+            plugins: {
+                legend: {
+                    labels: {
+                        color: textColor
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: {
+                        color: textColorSecondary
+                    },
+                    grid: {
+                        color: surfaceBorder,
+                        drawBorder: false
+                    }
+                },
+                y: {
+                    ticks: {
+                        color: textColorSecondary
+                    },
+                    grid: {
+                        color: surfaceBorder,
+                        drawBorder: false
+                    }
+                }
+            }
+        };
+
+        this.horizontalBarChartData = {
+            labels: ['Femenino', 'Masculino'],
+            datasets: [
+                {
+                    label: 'Género',
+                    backgroundColor: [documentStyle.getPropertyValue('--pink-500'), documentStyle.getPropertyValue('--blue-500')],
+                    data: [60, 40]
+                }
+            ]
+        };
+
+        this.horizontalBarChartOptions = {
+            indexAxis: 'y', // This makes the bar chart horizontal
             plugins: {
                 legend: {
                     labels: {

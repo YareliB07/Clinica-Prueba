@@ -6,10 +6,14 @@ import { ProductService } from 'src/app/demo/service/product.service';
 
 @Component({
     templateUrl: './crud.component.html',
-    providers: [MessageService]
+    providers: [MessageService],
+    selector: 'app-file-upload',
 })
 export class CrudComponent implements OnInit {
 
+    displayModal: boolean = false;
+
+    fileUploaded: boolean = false;
 
     productDialog: boolean = false;
 
@@ -31,7 +35,7 @@ export class CrudComponent implements OnInit {
 
     rowsPerPageOptions = [5, 10, 20];
 
-    uploadedFiles: any[] = [];
+    uploadedFiles: string[] = [];
 
     constructor(private productService: ProductService, private messageService: MessageService) { }
 
@@ -134,10 +138,11 @@ export class CrudComponent implements OnInit {
     }
 
     onUpload(event: any) {
-        for (const file of event.files) {
-            this.uploadedFiles.push(file);
+        const input = event.target as HTMLInputElement;
+        if (input.files && input.files.length > 0) {
+          const file = input.files[0];
+          console.log(`File selected: ${file.name}`);
+          this.displayModal = true;
         }
-
-        this.messageService.add({ severity: 'info', summary: 'Success', detail: 'File Uploaded' });
-    }
+      }
 }
