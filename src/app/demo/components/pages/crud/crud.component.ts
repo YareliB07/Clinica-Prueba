@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Product } from 'src/app/demo/api/product';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { ProductService } from 'src/app/demo/service/product.service';
+import { PacientesService } from 'src/app/demo/service/pacientes.service';
 
 @Component({
     templateUrl: './crud.component.html',
@@ -15,32 +14,41 @@ export class CrudComponent implements OnInit {
 
     fileUploaded: boolean = false;
 
-    productDialog: boolean = false;
+    pacientesDialog: boolean = false;
 
-    deleteProductDialog: boolean = false;
-
-    //deleteProductsDialog: boolean = false;
-
-    products: Product[] = [];
-
-    product: Product = {};
-
-    selectedProducts: Product[] = [];
+    deletePacientesDialog: boolean = false;
 
     submitted: boolean = false;
 
-    cols: any[] = [];
+    // submitted: boolean;
 
-    /*statuses: any[] = [];*/
+
+    pacientes = [];
+
+    paciente = {
+        id_paciente: 0,
+        nombre: '',
+        edad: 0,
+        telefono: '',
+        genero: '',
+        ocupacion: ''
+    };
+
+    cols: any[] = [];
 
     rowsPerPageOptions = [5, 10, 20];
 
     uploadedFiles: string[] = [];
 
-    constructor(private productService: ProductService, private messageService: MessageService) { }
+    /*statuses: any[] = [];*/
 
-    ngOnInit() {
-        this.productService.getProducts().then(data => this.products = data);
+
+    constructor(private pacientesService: PacientesService, private messageService: MessageService) { }
+
+    async ngOnInit() {
+        let response = await this.pacientesService.getPacientes();
+        this.pacientes = response.data;
+        this.pacientes.sort((a, b) => a.id_paciente - b.id_paciente);
 
         this.cols = [
             { field: 'nombre', header: 'Nombre' },
@@ -49,89 +57,135 @@ export class CrudComponent implements OnInit {
             { field: 'genero', header: 'Género' },
             { field: 'telefono', header: 'Teléfono' }
         ];
+    }
 
-        /*this.statuses = [
-            { label: 'INSTOCK', value: 'instock' },
-            { label: 'LOWSTOCK', value: 'lowstock' },
-            { label: 'OUTOFSTOCK', value: 'outofstock' }
-        ];*/
+    async refresh() {
+
+        let response = await this.pacientesService.getPacientes();
+        this.pacientes = response.data;
+
     }
 
     openNew() {
-        this.product = {};
+        this.paciente = {
+            id_paciente: 0,
+            nombre: '',
+            edad: 0,
+            telefono: '',
+            genero: '',
+            ocupacion: ''
+        };
         this.submitted = false;
-        this.productDialog = true;
+        this.pacientesDialog = true;
     }
 
-    /*editProduct(product: Product) {
-        this.product = { ...product };
-        this.productDialog = true;
-    }*/
-
-    deleteProduct(product: Product) {
-        this.deleteProductDialog = true;
-        this.product = { ...product };
+    deletePaciente(paciente: any) {
+        this.deletePacientesDialog = true;
+        this.paciente = { ...paciente };
     }
 
-    /*confirmDeleteSelected() {
-        this.deleteProductsDialog = false;
-        this.products = this.products.filter(val => !this.selectedProducts.includes(val));
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });
-        this.selectedProducts = [];
-    }*/
-
-    confirmDelete() {
-        this.deleteProductDialog = false;
-        this.products = this.products.filter(val => val.id !== this.product.id);
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Paciente eliminado', life: 3000 });
-        this.product = {};
+    async confirmDelete() {
+        this.deletePacientesDialog = false;
+        try {
+            await this.pacientesService.deletePaciente(this.paciente.id_paciente);
+            this.paciente = {
+                id_paciente: 0,
+                nombre: '',
+                ocupacion: '',
+                edad: 0,
+                genero: '',
+                telefono: '',
+            };
+            this.refresh();
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Paciente eliminado', life: 3000 });
+        } catch (error) {
+            console.error(error);
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al eliminar el paciente', life: 3000 });
+        }
     }
+
 
     hideDialog() {
-        this.productDialog = false;
+        this.pacientesDialog = false;
         this.submitted = false;
     }
 
-    saveProduct() {
+
+    //    async savePaciente() {
+    //         this.submitted = true;
+
+    //         if (this.paciente.nombre?.trim()) {
+    //             try {
+    //                 let response = await this.pacientesService.savePaciente(
+    //                     this.paciente.nombre,
+    //                     this.paciente.edad,
+    //                     this.paciente.telefono,
+    //                     this.paciente.genero,
+    //                     this.paciente.ocupacion,
+    //                 );
+
+    //                 if (response.status == 200) {
+    //                     this.pacientesDialog = false;
+    //                     this.paciente = {
+    //                         id_paciente: 0,
+    //                         nombre: '',
+    //                         edad: 0,
+    //                         telefono: '',
+    //                         genero: '',
+    //                         ocupacion: '',
+    //                     };
+    //                     window.location.reload()
+    //                    }
+    //            } catch(error){
+    //                this.messageService.add({  severity: 'error', summary: 'Error', detail: 'Paciente no Creado', life: 3000});
+    //            }
+    //         }
+    //     }
+
+
+    async savePaciente() {
         this.submitted = true;
 
-        if (this.product.nombre?.trim()) {
-            if (this.product.id) {
-                // @ts-ignore
-                this.products[this.findIndexById(this.product.id)] = this.product;
-                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
-            } else {
-                this.product.id = this.createId();
-                this.products.push(this.product);
-                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Paciente creado', life: 3000 });
+        if (this.validateForm()) {
+            try {
+                let response = await this.pacientesService.savePaciente(
+                    this.paciente.nombre,
+                    this.paciente.edad,
+                    this.paciente.telefono,
+                    this.paciente.genero,
+                    this.paciente.ocupacion,
+                );
+
+                if (response.status == 200) {
+                    this.pacientesDialog = false;
+                    this.paciente = {
+                        id_paciente: 0,
+                        nombre: '',
+                        edad: 0,
+                        telefono: '',
+                        genero: '',
+                        ocupacion: '',
+                    };
+                    this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Paciente guardado correctamente', life: 3000 });
+                }
+            } catch (error) {
+                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Paciente no Creado', life: 3000 });
             }
-
-            this.products = [...this.products];
-            this.productDialog = false;
-            this.product = {};
+        } else {
+            this.messageService.add({ severity: 'warn', summary: 'Advertencia', detail: 'Todos los campos son requeridos', life: 3000 });
         }
     }
 
-    findIndexById(id: string): number {
-        let index = -1;
-        for (let i = 0; i < this.products.length; i++) {
-            if (this.products[i].id === id) {
-                index = i;
-                break;
-            }
-        }
 
-        return index;
+    validateForm(): boolean {
+        return !!this.paciente.nombre?.trim() &&
+            !!this.paciente.edad &&
+            !!this.paciente.telefono?.trim() &&
+            !!this.paciente.genero &&
+            !!this.paciente.ocupacion?.trim();
     }
 
-    createId(): string {
-        let id = '';
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        for (let i = 0; i < 5; i++) {
-            id += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        return id;
-    }
+
 
     onGlobalFilter(table: Table, event: Event) {
         table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
@@ -140,9 +194,30 @@ export class CrudComponent implements OnInit {
     onUpload(event: any) {
         const input = event.target as HTMLInputElement;
         if (input.files && input.files.length > 0) {
-          const file = input.files[0];
-          console.log(`File selected: ${file.name}`);
-          this.displayModal = true;
+            const file = input.files[0];
+            console.log(`File selected: ${file.name}`);
+            this.displayModal = true;
         }
-      }
+    }
+
+//    este metodo era para comenzar a hacer lo de los expedientes 
+// async openExp(paciente: any) {
+         
+//         this.paciente = { ...paciente };
+//         try{ 
+//          let data = await this.pacientesService.getExpediente(this.paciente.id_paciente)
+//         //    this.idExpediente = data.data["id_expediente"]
+//         //    this.fechaExpediente = data.data["fecha_modificacion"]??"ninguna"
+//            this.expediente = JSON.parse(data.data["datos"])
+//            this.submitted = false;
+//            this.expedienteDialog = true;
+//          }catch(error){
+//            this.vaciarExp()
+//            this.submitted = false;
+//            this.expedienteDialog = true;
+//            console.log("Este expediente se encuentra vacío")
+//          }
+          
+//    }
+
 }
