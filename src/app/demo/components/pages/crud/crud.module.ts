@@ -1,10 +1,10 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { CrudRoutingModule } from './crud-routing.module';
-import { CrudComponent } from './crud.component';
-import { TableModule } from 'primeng/table';
-import { FileUploadModule } from 'primeng/fileupload';
+import { NgModule } from '@angular/core'; 
+import { CommonModule } from '@angular/common'; 
+import { FormsModule } from '@angular/forms'; 
+import { CrudRoutingModule } from './crud-routing.module'; 
+import { CrudComponent } from './crud.component'; 
+import { DataViewModule } from 'primeng/dataview'; 
+import { TableModule } from 'primeng/table'; 
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { ToastModule } from 'primeng/toast';
@@ -17,13 +17,17 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DialogModule } from 'primeng/dialog';
 import { InputMaskModule } from 'primeng/inputmask';
+import { CheckboxModule } from 'primeng/checkbox';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { TabViewModule } from 'primeng/tabview';
+import { OrderListModule } from 'primeng/orderlist';
+import { PickListModule } from 'primeng/picklist';
 
 @NgModule({
     imports: [
         CommonModule,
         CrudRoutingModule,
         TableModule,
-        FileUploadModule,
         FormsModule,
         ButtonModule,
         RippleModule,
@@ -36,7 +40,13 @@ import { InputMaskModule } from 'primeng/inputmask';
         RadioButtonModule,
         InputNumberModule,
         DialogModule,
-        InputMaskModule
+        InputMaskModule,
+        CheckboxModule,
+        DataViewModule,
+        MultiSelectModule,
+        TabViewModule,
+        OrderListModule,
+        PickListModule
     ],
     declarations: [CrudComponent]
 })

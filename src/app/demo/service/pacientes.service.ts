@@ -9,10 +9,18 @@ export class PacientesService {
     constructor() { }
 
     //url='https://fastapi-service-fhatimareyes.cloud.okteto.net/' 
-    url='http://127.0.0.1:8000/' 
+    url='http://127.0.0.1:8001/' 
     
     async getPacientes() {
        return await axios.get(this.url+'pacientes/')
+    }
+
+    async getPatient(name: string) {
+        return await axios.get(`${this.url}patient/`, { params: { name } });
+    }
+    
+    async getExpedienteFhir(name: string) {
+        return await axios.get(`${this.url}get_expediente_fhir/${name}`);
     }
 
     async savePaciente(nombre: string, edad:number, telefono:string, genero: string, ocupacion:string){

@@ -1,236 +1,201 @@
 <div class="grid">
     <div class="col-12">
-        <div class="card px-6 py-6">
-            <p-toast></p-toast>
-            <p-toolbar styleClass="mb-4">
-                <ng-template pTemplate="left">
-                    <div class="my-2">
-                        <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
-                    </div>
-                </ng-template>
-            </p-toolbar>
-
-            <p-table #dt [value]="pacientes" [columns]="cols" responsiveLayout="scroll" [rows]="10"
-                [globalFilterFields]="['nombre','ocupacion','edad','genero','telefono']" [paginator]="true"
-                [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
-                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
-                <ng-template pTemplate="caption">
-                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                        <h5 class="m-0">PACIENTES</h5>
-                        <span class="block mt-2 md:mt-0 p-input-icon-left">
-                            <i class="pi pi-search"></i>
-                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar por nombre" class="w-full sm:w-auto" />
-                        </span>
-                    </div>
-                </ng-template>
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th pSortableColumn="nombre">Nombre</th>
-                        <th pSortableColumn="ocupacion">Ocupación</th>
-                        <th pSortableColumn="edad">Edad</th>
-                        <th pSortableColumn="genero">Género</th>
-                        <th pSortableColumn="telefono">Teléfono</th>
-                        <th></th>
-                    </tr>
-                </ng-template>
-
-                <ng-template pTemplate="body" let-paciente>
-                    <tr>
-                        <td style="width:14%; min-width:8rem;">
-                            <span class="p-column-title">Nombre</span>
-                            {{paciente.nombre}}
-                        </td>
-                        <td style="width:14%; min-width:10rem;">
-                            <span class="p-column-title">Ocupación</span>
-                            {{paciente.ocupacion}}
-                        </td>
-                        <td style="width:14%; min-width: 10rem;">
-                            <span class="p-column-title">Edad</span>
-                            {{paciente.edad}}
-                        </td>
-                        <td style="width:14%; min-width: 10rem;">
-                            <span class="p-column-title">Género</span>
-                            {{paciente.genero}}
-                        </td>
-                        <td style="width:14%; min-width: 10rem;">
-                            <span class="p-column-title">Teléfono</span>
-                            {{paciente.telefono}}
-                        </td>
-                        <td style="width:14%; min-width: 10rem;">
-                            <div class="flex">
-                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning mr-3" (click)="deletePaciente(paciente)"></button>
-
-                                <button pButton pRipple icon="pi pi-book" class="p-button-rounded p-button-help mr-2" (click)="openExp(pacientes)"></button>
-                                <!-- <button pButton type="button" label="Expediente" icon="pi pi-plus" (click)="fileInput.click()"></button>
-                                <input #fileInput type="file" style="display: none;" (change)="onUpload($event)" /> -->
-
-                                <p-dialog [(visible)]="displayModal" [modal]="true" [responsive]="true" [style]="{width: '45vw'}">
-                                    <div class="grid">
-                                        <div class="col-12">
-                                            <label for="name">Buscar por nombre:</label>
-                                            <input id="name" type="text" pInputText [(ngModel)]="name" />
-                                        </div>
-
-                                        <div class="col-12">
-                                            <button pButton type="button" label="Actualizar datos con la ficha de HL7"
-                                                icon="pi pi-refresh" (click)="updateData()"></button>
-                                        </div>
-
-                                        <div class="col-6">
-                                            <h5>Datos del paciente en el sistema:</h5>
-                                            <div><strong>Nombre:</strong> José María Morelos</div>
-                                            <div><strong>Ocupación:</strong> tal</div>
-                                            <div><strong>Edad:</strong> 51</div>
-                                            <div><strong>Género:</strong> M</div>
-                                            <div><strong>Número de teléfono:</strong> 2721283490</div>
-                                        </div>
-                                        <div class="col-6">
-                                            <h5>Ficha formato HL7:</h5>
-                                            <div><strong>Nombre:</strong> José María Morelos</div>
-                                            <div><strong>Ocupación:</strong> tal</div>
-                                            <div><strong>Edad:</strong> 50</div>
-                                            <div><strong>Género:</strong> M</div>
-                                            <div><strong>Número de teléfono:</strong> 2721283490</div>
-                                        </div>
-                                    </div>
-                                    <p-footer>
-                                        <button type="button" pButton icon="pi pi-check" (click)="displayModal=false"
-                                            label="Finalizar importación"></button>
-                                    </p-footer>
-                                </p-dialog>
-                            </div>
-                        </td>
-                    </tr>
-                </ng-template>
-            </p-table>
-        </div>
-
-        <!-- <p-dialog [(visible)]="pacientesDialog" [style]="{width: '450px'}" header="Nuevo Paciente" [modal]="true"
-            class="p-fluid">
-            <ng-template pTemplate="content">
-                <div class="field">
-                    <label for="nombre">Nombre Paciente:</label>
-                    <input type="text" pInputText id="nombre" [(ngModel)]="paciente.nombre" required autofocus
-                        [ngClass]="{'ng-invalid ng-dirty' : submitted && !paciente.nombre}" />
-                </div>
-        
-                <div class="field">
-                    <label for="Ocupacion">Ocupación</label>
-                    <input type="text" pInputText id="ocupacion" [(ngModel)]="paciente.ocupacion" required autofocus
-                        [ngClass]="{'ng-invalid ng-dirty' : submitted && !paciente.ocupacion}" />
-                </div>
-        
-                <div class="field">
-                    <label class="mb-3">Genero</label>
-                    <div class="formgrid grid">
-                        <div class="field-radiobutton col-6">
-                            <p-radioButton id="Masculino" name="category" value="M"
-                                [(ngModel)]="paciente.genero"></p-radioButton>
-                            <label for="category">Masculino</label>
-                        </div>
-                        <div class="field-radiobutton col-6">
-                            <p-radioButton id="Femenino" name="category" value="F"
-                                [(ngModel)]="paciente.genero"></p-radioButton>
-                            <label for="category">Femenino</label>
-                        </div>
-                    </div>
-                </div>
-        
-                <div class="formgrid mb-3">
-                    <div class="field col">
-                        <span class="block mb-2">Edad</span>
-                        <p-inputMask id="edad" mask="99" [(ngModel)]="paciente.edad" required autofocus
-                            [ngClass]="{'ng-invalid ng-dirty' : submitted && !paciente.edad}"></p-inputMask>
-                    </div>
-                </div>
-        
-                <div class="formgrid mb-3">
-                    <div class="col-12 mb-2">
-                        <span class="block mb-2">Número Telefónico</span>
-                        <p-inputMask id="telefono" mask="9999999999" [(ngModel)]="paciente.telefono" required autofocus
-                            [ngClass]="{'ng-invalid ng-dirty' : submitted && !paciente.telefono}"></p-inputMask>
-                    </div>
+        <p-toast></p-toast>
+        <p-toolbar styleClass="mb-4">
+            <ng-template pTemplate="left">
+                <div class="my-2">
+                    <button pButton pRipple label="Nuevo paciente" icon="pi pi-plus" class="p-button-success mr-2"
+                        (click)="openNew()"></button>
                 </div>
             </ng-template>
-        
+        </p-toolbar>
+
+        <p-table #dt [value]="pacientes" [columns]="cols" responsiveLayout="scroll" [rows]="10"
+            [globalFilterFields]="['nombre','ocupacion','edad','genero','telefono']" [paginator]="true"
+            [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+            <ng-template pTemplate="caption">
+                <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                    <h5 class="m-0">PACIENTES</h5>
+                    <span class="block mt-2 md:mt-0 p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="onGlobalFilter(dt, $event)"
+                            placeholder="Buscar por nombre" class="w-full sm:w-auto" />
+                    </span>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th pSortableColumn="nombre">Nombre</th>
+                    <th pSortableColumn="ocupacion">Ocupación</th>
+                    <th pSortableColumn="edad">Edad</th>
+                    <th pSortableColumn="genero">Género</th>
+                    <th pSortableColumn="telefono">Teléfono</th>
+                    <th></th>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-paciente>
+                <tr>
+                    <td style="width:25%; min-width:8rem;">
+                        <span class="p-column-title">Nombre</span>
+                        {{paciente.nombre}}
+                    </td>
+                    <td style="width:20%; min-width:10rem;">
+                        <span class="p-column-title">Ocupación</span>
+                        {{paciente.ocupacion}}
+                    </td>
+                    <td style="width:14%; min-width: 10rem;">
+                        <span class="p-column-title">Edad</span>
+                        {{paciente.edad}}
+                    </td>
+                    <td style="width:14%; min-width: 10rem;">
+                        <span class="p-column-title">Género</span>
+                        {{paciente.genero}}
+                    </td>
+                    <td style="width:14%; min-width: 10rem;">
+                        <span class="p-column-title">Teléfono</span>
+                        {{paciente.telefono}}
+                    </td>
+                    <td style="width:14%; min-width: 10rem;">
+                        <div class="flex">
+                            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning mr-3"
+                                (click)="deletePaciente(paciente)"></button>
+
+                            <button pButton pRipple icon="pi pi-envelope" class="p-button-rounded p-button-succes mr-2"
+                                (click)="openExpFhir(paciente)"></button>
+
+                            <button pButton pRipple icon="pi pi-book" class="p-button-rounded p-button-help mr-2"
+                                (click)="openExp(paciente)"></button>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+
+        <p-dialog [(visible)]="pacientesDialog" [style]="{width: '500px'}" header="Nuevo Paciente" [modal]="true"
+            class="p-fluid">
+
+            <div class="field grid">
+                <label htmlFor="name" class="col-12 mb-2 md:col-3"><b>Nombre:</b></label>
+                <div class="field col-10 md:col-9">
+                    <input type="text" pInputText id="nombre" [(ngModel)]="patient.name" required autofocus
+                        [ngClass]="{'ng-invalid ng-dirty' : submitted && !paciente.nombre}"/>
+                </div>
+            </div>
+            <div class="col field">
+                <button pButton type="button" label="Buscar" (click)="openPatient(patient)"></button>
+            </div>
+
+            <div class="field grid">
+                <label htmlFor="name" class="col-12 mb-2 md:col-3"><b>Ocupacion:</b></label>
+                <div class="field col-10 md:col-9 mb:col-4">
+                    <input type="text" pInputText id="ocupacion" [(ngModel)]="patient.occupation" required autofocus
+                        [ngClass]="{'ng-invalid ng-dirty' : submitted && !paciente.ocupacion}" readonly/>
+                </div>
+            </div>
+
+            <div class="field grid">
+                <label htmlFor="name" class="col-12 mb-2 md:col-5"><b>Género:</b></label>
+                <div class="formgrid grid">
+                    <div class="field-radiobutton mb-2 ">
+                        <p-radioButton id="Masculino" name="category" value="M"
+                            [(ngModel)]="patient.gender" [disabled]="true"></p-radioButton>
+                        <label for="category">Masculino</label>
+                    </div>
+                    <div class="field-radiobutton mb-2 md:col-6">
+                        <p-radioButton id="Femenino" name="category" value="F"
+                            [(ngModel)]="patient.gender" [disabled]="true"></p-radioButton>
+                        <label for="category">Femenino</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field grid">
+                <label htmlFor="name" class="col-12 mb-2 md:col-3"><b>Edad:</b></label>
+                <div class="field col">
+                    <p-inputMask id="edad" mask="99" [(ngModel)]="patient.age" required autofocus
+                        [ngClass]="{'ng-invalid ng-dirty' : submitted && !patient.age}" [readonly]="true"></p-inputMask>
+                </div>
+            </div>
+
+            <div class="field grid">
+                <label htmlFor="name" class="col-12 mb-2 md:col-3"><b>Teléfono:</b></label>
+                <div class="col-12 md:col-9">
+                    <p-inputMask id="telefono" mask="9999999999" [(ngModel)]="patient.phone" required autofocus
+                        [ngClass]="{'ng-invalid ng-dirty' : submitted && !paciente.telefono}" [readonly]="true"></p-inputMask>
+                </div>
+            </div>
+
+
+
             <ng-template pTemplate="footer">
                 <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
                     (click)="hideDialog()"></button>
                 <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"
                     (click)="savePaciente()"></button>
-        
-            </ng-template> -->
-
-        <p-dialog [(visible)]="pacientesDialog" [style]="{width: '450px'}" header="Nuevo Paciente" [modal]="true"
-            class="p-fluid">
-                <div class="field grid">
-                    <label htmlFor="name" class="col-12 mb-2 md:col-3"><b>Nombre:</b></label>
-                  <div class="field col-10 md:col-9">
-                    <input type="text" pInputText id="nombre" [(ngModel)]="paciente.nombre" required autofocus
-                        [ngClass]="{'ng-invalid ng-dirty' : submitted && !paciente.nombre}" />
-                  </div>
-                    <!-- <small class="ng-dirty ng-invalid" *ngIf="submitted && !paciente.nombre">El campo es requerido.</small> -->
-                </div>
-        
-                <div class="field grid">
-                   <label htmlFor="name"  class="col-12 mb-2 md:col-3"><b>Ocupacion:</b></label>
-                  <div class="field col-10 md:col-9 mb:col-4">
-                    <input type="text" pInputText id="ocupacion" [(ngModel)]="paciente.ocupacion" required autofocus
-                        [ngClass]="{'ng-invalid ng-dirty' : submitted && !paciente.ocupacion}" />
-                    </div>
-                </div>
-        
-                <div class="field grid">
-                    <label htmlFor="name" class="col-12 mb-2 md:col-5"><b>Género:</b></label>
-                    <div class="formgrid grid">
-                        <div class="field-radiobutton mb-2 ">
-                            <p-radioButton id="Masculino" name="category" value="M"
-                            [(ngModel)]="paciente.genero"></p-radioButton>
-                            <label for="category">Masculino</label>
-                        </div>
-                        <div class="field-radiobutton mb-2 md:col-6">
-                            <p-radioButton id="Femenino" name="category" value="F"
-                            [(ngModel)]="paciente.genero"></p-radioButton>
-                            <label for="category">Femenino</label>
-                        </div>
-                    </div>
-                </div>
-        
-                <div class="field grid">
-                    <label htmlFor="name" class="col-12 mb-2 md:col-3"><b>Edad:</b></label>
-                    <div class="field col">
-                        <p-inputMask id="edad" mask="99" [(ngModel)]="paciente.edad" required autofocus
-                            [ngClass]="{'ng-invalid ng-dirty' : submitted && !paciente.edad}"></p-inputMask>
-                    </div>
-                </div>
-        
-                <div class="field grid">
-                    <label htmlFor="name" class="col-12 mb-2 md:col-3"><b>Teléfono:</b></label>
-                    <div class="col-12 md:col-9">
-                        <p-inputMask id="telefono" mask="9999999999" [(ngModel)]="paciente.telefono" required autofocus
-                        [ngClass]="{'ng-invalid ng-dirty' : submitted && !paciente.telefono}"></p-inputMask>
-                    </div>
-                </div>
-        
-        
-        
-                <ng-template pTemplate="footer">
-                    <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
-                        (click)="hideDialog()"></button>
-                    <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"
-                        (click)="savePaciente()"></button>
-                </ng-template>
+            </ng-template>
         </p-dialog>
 
-        <p-dialog [(visible)]="deletePacientesDialog" header="Eliminar paciente" [modal]="true" [style]="{width:'450px'}">
+        <p-dialog [(visible)]="expedienteDialog" [modal]="true" [header]="'Información del Expediente'" [closable]="true" [dismissableMask]="true" [style]="{ width: '40vw' }">
+            <ng-template pTemplate="content">
+              <div *ngIf="expedient">
+                <h3>Observaciones:</h3>
+                <ul>
+                  <li *ngFor="let obs of expedient.Observations">
+                    {{ obs.value || 'Sin información' }}
+                  </li>
+                </ul>
+                <h3>Condiciones:</h3>
+                <ul>
+                  <li *ngFor="let cond of expedient.Conditions">
+                    {{ cond.description || 'Sin descripción' }}
+                  </li>
+                </ul>
+                <h3>Procedimientos:</h3>
+                <ul>
+                  <li *ngFor="let proc of expedient.Procedures">
+                    {{ proc.description || 'Sin descripción' }}
+                  </li>
+                </ul>
+                <h3>Medicamentos:</h3>
+                <ul>
+                  <li *ngFor="let med of expedient.MedicationStatements">
+                    {{ med.dosage || 'Sin información' }}
+                  </li>
+                </ul>
+              </div>
+              <div *ngIf="!expedient">
+                <p>No se encontraron datos del expediente.</p>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="footer">
+              <button pButton label="Cerrar" icon="pi pi-times" (click)="expedienteDialog = false"></button>
+              <button pButton pRipple class="p-button-rounded p-button-warning" (click)="idExpediente==0 ? guardarExp():updateExp()" 
+				style="width: 100px; height: 40px;"><b>Guardar</b></button>
+            </ng-template>
+          </p-dialog>
+          
+          <p-dialog header="Expediente" [(visible)]="expedientejsonDialog" modal="true" [style]="{ width: '70vw' }">
+            <pre>{{ formatJson() }}</pre>
+          </p-dialog>
+          
+                   
+
+        
+        <p-dialog [(visible)]="deletePacientesDialog" header="Eliminar paciente" [modal]="true"
+            [style]="{width:'450px'}">
             <div class="flex align-items-center justify-content-center">
                 <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
                 <span *ngIf="pacientes">¿Estás seguro que quieres eliminar a <b>{{paciente.nombre}}</b>?</span>
             </div>
             <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deletePacientesDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Sí" (click)="confirmDelete()"></button>
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+                    (click)="deletePacientesDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Sí"
+                    (click)="confirmDelete()"></button>
             </ng-template>
         </p-dialog>
+
+
     </div>
-</div>
